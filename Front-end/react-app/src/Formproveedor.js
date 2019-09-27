@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import CurrentHorarioDropDown from './CurrentHorarioDropDown';
 
-class Formproveedor extends Component{
+class ModHorario extends Component{
     constructor(props) {
         super(props)
     
@@ -12,7 +12,7 @@ class Formproveedor extends Component{
              nombres: '',
              apellidos: '',
              email: '',
-             categoria: ''
+             cateogira: ''
         }
     }
 
@@ -43,42 +43,31 @@ class Formproveedor extends Component{
                     
                 <div> 
                     Ingrese el nombre de usuario:
-                    <br></br>
-                    <input type = "text" name= "username" value={title} onChange={this.changeHandler}></input>
+                    <input type = "text" name= "title" value={title} onChange={this.changeHandler}></input>
                 </div>
                 <br></br>
                 <div> 
                     Ingrese una contraseña:
-                    <br></br>
-                    <input type = "password" name= "passwd" value={title} onChange={this.changeHandler}></input>
+                    <input type = "text" name= "title" value={title} onChange={this.changeHandler}></input>
                 </div>
                 <br></br>
                 <div> 
                     Ingrese su nombre:
-                    <br></br>
-                    <input type = "text" name= "nombres" value={title} onChange={this.changeHandler}></input>
+                    <input type = "text" name= "title" value={title} onChange={this.changeHandler}></input>
                 </div>
                 <br></br>
                 <div> 
                     Ingrese su apellido:<br></br>
-                <input type = "text" name= "apellidos" value={title} onChange={this.changeHandler}></input>
-                </div>
-                
-                <br></br>
-                <div> 
-                    Ingrese el email:<br></br>
-                <input type = "text" name= "email" value={title} onChange={this.changeHandler}></input>
+                <input type = "text" name= "title" value={title} onChange={this.changeHandler}></input>
                 </div>
                 
                 <br></br>
                 <div> 
                    Seleccione una categoria:
-                   <br>
-                   </br>
-                    <input type = "text" name= "categoria" value={title} onChange={this.changeHandler}></input>
+                    <input type = "text" name= "title" value={title} onChange={this.changeHandler}></input>
                 </div>
                 <br></br>
-                <button class="button"  type="submit">Submit</button>
+                <button type="submit">Submit</button>
                 </form>
             </div>
         )

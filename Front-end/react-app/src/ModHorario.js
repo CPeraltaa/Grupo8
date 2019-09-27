@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import './App.css';
-import GetHorario from './GetHorario';
 import CurrentHorarioDropDown from './CurrentHorarioDropDown';
+
 class ModHorario extends Component{
     constructor(props) {
         super(props)
     
         this.state = {
              id_horario: '',
+             title: '',
              id_new: ''
         }
     }
@@ -22,7 +22,7 @@ class ModHorario extends Component{
        e.preventDefault()
        console.log(this.state)
        axios
-            .post('http://localhost:3001/cliente/mod_schedule',this.state)
+            .post('http://localhost:3001/cliente/mod_schedule/:id',this.state)
         	.then(response => {
                 console.log(response)
             })
@@ -39,7 +39,7 @@ class ModHorario extends Component{
     render(){
         const{title} =  this.state
         return (
-            <div id="main-nav">
+            <div>
                  <br></br><br></br><br></br>
                 <form onSubmit={this.submitHandler}>
                     
@@ -49,12 +49,12 @@ class ModHorario extends Component{
                 </div>
                 <br></br>
                 <div> 
-                    Seleccione el horario nuevo:
-                    <GetHorario parentCallback ={this.callbackFunction}/>
+                    Seleccione el horario nuevo:<br></br>
+                <input type = "text" name= "title" value={title} onChange={this.changeHandler}></input>
                 </div>
                 
                 <br></br>
-                <button class="button" type="submit" >Submit</button>
+                <button type="submit">Submit</button>
                 </form>
             </div>
         )

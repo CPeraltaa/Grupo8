@@ -1,3 +1,4 @@
+ drop database proyecto;
  CREATE database proyecto;
  use  proyecto;
 
@@ -21,7 +22,7 @@ CREATE TABLE cliente (
     apellidos     VARCHAR(200) NOT NULL,
     email		VARCHAR(300) NOT NULL,
     username     VARCHAR(100) NOT NULL,
-    password   VARCHAR(50) NOT NULL
+    password   VARCHAR(50) NOT NULL,
     PRIMARY KEY ( codcliente )
 );
 
@@ -31,7 +32,7 @@ CREATE TABLE horario (
     proveedor_codproveedor   INTEGER NOT NULL,
     fecha                    DATE NOT NULL,
     hora_inicio              TIME NOT NULL,
-    hora_fin                 TIME NOT NULL
+    hora_fin                 TIME NOT NULL,
     PRIMARY KEY ( codhorario )
 );
 
@@ -42,16 +43,14 @@ CREATE TABLE proveedor (
     email					VARCHAR(300) NOT NULL,
     password               VARCHAR(50) NOT NULL,
     username     			VARCHAR(100) NOT NULL,
-    categoria_codcategoria   INTEGER NOT NULL
+    categoria_codcategoria   INTEGER NOT NULL,
     PRIMARY KEY ( codproveedor )
 );
 
 CREATE TABLE solicitud (
-    solicitud_id INTEGER NOT NULL
     cliente_codcliente   INTEGER NOT NULL,
     proveedor_codproveedor   INTEGER NOT NULL,
     accepted BIT NOT NULL
-    PRIMARY KEY (solicitud_id)
 );
 
 
@@ -80,7 +79,7 @@ ALTER TABLE solicitud
         REFERENCES proveedor ( codproveedor );
 
 
-
+delimiter $$
 CREATE PROCEDURE agregarCliente (IN Nombres VARCHAR(200),
 Apellidos VARCHAR(200),
 Email	VARCHAR(300) ,
@@ -88,21 +87,22 @@ Username VARCHAR(100) ,
 Password VARCHAR(50)
 )
 BEGIN
-IF NOT EXISTS (SELECT * FROM cliente WHERE email = Email)
-THEN 
-       INSERT INTO cliente
-       VALUES (Nombres,Apellidos,Email,Username,Password);
+	IF NOT EXISTS (SELECT * FROM cliente WHERE email = Email)
+	THEN 
+		   INSERT INTO cliente
+		   VALUES (Nombres,Apellidos,Email,Username,Password);
 
-ELSE
-       UPDATE cliente SET
-       nombres =  Nombres, 
-	   apellidos =  Apellidos, 
-	   username = Username 
-       WHERE email = Email;
-END IF;
+	ELSE
+		   UPDATE cliente SET
+		   nombres =  Nombres, 
+		   apellidos =  Apellidos, 
+		   username = Username 
+		   WHERE email = Email;
+	END IF;
 END
+$$
 
-
+delimiter $$
 CREATE PROCEDURE agregarProveedor (IN Nombres VARCHAR(200),
 Apellidos VARCHAR(200),
 Email	VARCHAR(300) ,
@@ -111,15 +111,16 @@ Password VARCHAR(50),
 Categoria INTEGER
 )
 BEGIN
-IF NOT EXISTS (SELECT * FROM proveedor WHERE email = Email)
-THEN
-       INSERT INTO proveedor
-       VALUES (Nombres,Apellidos,Email,Username,Password,Categoria)
-ELSE
-       UPDATE proveedor SET
-       nombres =  Nombres 
-	   apellidos =  Apellidos 
-	   username = Username   
-       WHERE email = Email
-END IF;
+	IF NOT EXISTS (SELECT * FROM proveedor WHERE email = Email)
+	THEN
+		   INSERT INTO proveedor
+		   VALUES (Nombres,Apellidos,Email,Username,Password,Categoria);
+	ELSE
+		   UPDATE proveedor SET
+		   nombres =  Nombres ,
+		   apellidos =  Apellidos ,
+		   username = Username   
+		   WHERE email = Email;
+	END IF;
 END
+$$
