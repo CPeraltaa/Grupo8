@@ -1,16 +1,14 @@
 const controller={};
 
 
-app.get('/horario', (req, res) => {
-    res.render('calendar');
-});
 
-
-
+controller.horario = function(req, res){
+  res.render('calendar');
+};
 
 //Registro de provededor
-app.post('/proveedor/registry', (req, res) => {
-    let emp = req.body;
+controller.registro = function(req, res){
+  let emp = req.body;
     var username = req.body.username;
     var email = req.body.email;
     var sql = "SET @username = ?; SET @paswd = ?;SET @email = ?;SET @nombres = ?;SET @apellidos = ?; SET @categoria = ?;\
@@ -32,57 +30,57 @@ app.post('/proveedor/registry', (req, res) => {
     		})
 	}
 
-	});
-    
-});
+  });
+};
+
 
 //Visualizar   horarios
-
-app.get('/client/:id', (req, res) => {
-    mysqlConnection.query('SELECT horario.codhorario, horario.fecha, horario.hora_inicio, horario.hora_fin FROM horario, proveedor WHERE \
+controller.visualizar_horario = function(req, res){
+  mysqlConnection.query('SELECT horario.codhorario, horario.fecha, horario.hora_inicio, horario.hora_fin FROM horario, proveedor WHERE \
       proveedor.codproveedor = horario.proveedor_codproveedor AND proveedor.codproveedor = ?', [req.params.id], (err, rows, fields) => {
         if (!err)
             res.send(rows);
         else
             console.log(err);
     })
-});
+  };
+
+
+
 
 
 //ingresar horarios
-app.post('/proveedor/horario', (req, res) => {
-	//var usercode = req.session.code;
-	var usercode = 2;
-	let emp = req.body;
-  let fecha = req.body.fecha;
-  let should = true;
-  mysqlConnection.query('SELECT horario.fecha FROM horario WHERE horario.proveedor_codproveedor = ?', [usercode], (err, rows, fields) => {
+
+controller.ingresar_horario = function(req, res){
+//var usercode = req.session.code;
+var usercode = 2;
+let emp = req.body;
+let fecha = req.body.fecha;
+let should = true;
+mysqlConnection.query('SELECT horario.fecha FROM horario WHERE horario.proveedor_codproveedor = ?', [usercode], (err, rows, fields) => {
+      if (!err){
+        rows.forEach(function(row) {
+          if(fecha == row.fecha)
+            should = false;
+        });
+      }
+      else
+          console.log(err);
+  })
+  if (should != false)	{
+    var sql = "SET @fecha = ?;SET @horai = ?;SET @horaf = ?; SET @proveedor =?;\
+    INSERT INTO horario ( fecha, hora_inicio, hora_fin, proveedor_codproveedor ) \
+    VALUES ( @fecha, @horai, @horaf, @proveedor)";
+       mysqlConnection.query(sql, [emp.fecha, emp.hora_inicio, emp.hora_fin, usercode], (err, rows, fields) => {
         if (!err){
-          rows.forEach(function(row) {
-            if(fecha == row.fecha)
-              should = false;
-          });
-        }
+            res.send('Updated successfully');
+
+          }
         else
             console.log(err);
-    })
-    if (should != false)	{
-      var sql = "SET @fecha = ?;SET @horai = ?;SET @horaf = ?; SET @proveedor =?;\
-      INSERT INTO horario ( fecha, hora_inicio, hora_fin, proveedor_codproveedor ) \
-      VALUES ( @fecha, @horai, @horaf, @proveedor)";
-         mysqlConnection.query(sql, [emp.fecha, emp.hora_inicio, emp.hora_fin, usercode], (err, rows, fields) => {
-          if (!err){
-              res.send('Updated successfully');
-
-            }
-          else
-              console.log(err);
-    
-        });
-    }
-});
- 
-
+  
+      });
+  }};
 
 
 //Procedimiento para obtener fechas intermedias
@@ -103,57 +101,60 @@ var getDates = function(startDate, endDate) {
 
 
 //agendar horario
-app.post('/cliente/schedule/:id', (req, res) => {
-  //var usercode = session.code;
-  var usercode = 1;
-  let emp = req.body;
-  var sql1 = "SET @horario = ?; SET @usuario = ?;\
-  INSERT INTO cita ( horario_codhorario, cliente_codcliente ) \
-  VALUES ( @horario, @usuario)";
+controller.agendar_horario = function(req, res){
+ //var usercode = session.code;
+ var usercode = 1;
+ let emp = req.body;
+ var sql1 = "SET @horario = ?; SET @usuario = ?;\
+ INSERT INTO cita ( horario_codhorario, cliente_codcliente ) \
+ VALUES ( @horario, @usuario)";
 
-  mysqlConnection.query(sql1, [req.params.id, usercode], (err, rows, fields) => {
-    if (!err)
-        res.send('Updated successfully');
+ mysqlConnection.query(sql1, [req.params.id, usercode], (err, rows, fields) => {
+   if (!err)
+       res.send('Updated successfully');
 
-    else
-        console.log(err);
-})
-});
+   else
+       console.log(err);
+})};
+
+
+
 
 //Visualizar solicitudes
-app.get('/proveedor/solicitud/:id', (req, res) => {
+
+controller.ver_solicitudes = function(req, res){
   mysqlConnection.query('SELECT * FROM solicitud, proveedor WHERE \
-    proveedor.codproveedor = solicitud.proveedor_codproveedor AND proveedor.codproveedor = ? AND solicitud.accepted = false', [req.params.id], (err, rows, fields) => {
-      if (!err)
-          res.send(rows);
-      else
-          console.log(err);
-  })
-});
+  proveedor.codproveedor = solicitud.proveedor_codproveedor AND proveedor.codproveedor = ? AND solicitud.accepted = false', [req.params.id], (err, rows, fields) => {
+    if (!err)
+        res.send(rows);
+    else
+        console.log(err);
+})};
+
+
 
 
 
 //aceptar solicitud
-app.post('/proveedor/solicitud/:id', (req, res) => {
-  //var usercode = session.code;
-  var usercode = 2;
-  let emp = req.body;
-  var sql1 = "  UPDATE solicitud SET solicitud.accepted = 1 \
-  WHERE solicitud.proveedor_codproveedor = ? AND solicitud.cliente_codcliente = ?"; 
-  mysqlConnection.query(sql1, [usercode, req.params.id], (err, rows, fields) => {
-    if (!err)
-        res.send('Updated successfully');
+controller.aceptar_solicitud = function(req, res){
+//var usercode = session.code;
+var usercode = 2;
+let emp = req.body;
+var sql1 = "  UPDATE solicitud SET solicitud.accepted = 1 \
+WHERE solicitud.proveedor_codproveedor = ? AND solicitud.cliente_codcliente = ?"; 
+mysqlConnection.query(sql1, [usercode, req.params.id], (err, rows, fields) => {
+  if (!err)
+      res.send('Updated successfully');
 
-    else
-        console.log(err);
-})
+  else
+      console.log(err);
+})};
 
-});
 
 
 
 //Modificar horario
-app.post('/cliente/mod_schedule', (req, res) => {
+controller.modificar_horario = function(req, res){
   //var usercode = session.code;
   var usercode = 1;
   let emp = req.body;
@@ -168,24 +169,24 @@ app.post('/cliente/mod_schedule', (req, res) => {
 
     else
         console.log(err);
-})
-});
+})};
+
 
 
 
 //get horarios from user
-app.get('/client/cita/logged', (req, res) => {
+controller.horariobyuser = function(req, res){
   mysqlConnection.query('SELECT * FROM cita, horario WHERE \
-    cita.horario_codhorario = horario.codhorario AND cita.cliente_codcliente = 1', [], (err, rows, fields) => {
-      if (!err)
-          res.send(rows);
-      else
-          console.log(err);
-  })
-});
+  cita.horario_codhorario = horario.codhorario AND cita.cliente_codcliente = 1', [], (err, rows, fields) => {
+    if (!err)
+        res.send(rows);
+    else
+        console.log(err);
+})};
+
 
 //get horarios not reserved
-app.get('/prov/cita/notsel', (req, res) => {
+controller.horariobydoctor = function(req, res){
   mysqlConnection.query('SELECT * FROM cita, horario, proveedor WHERE \
     cita.horario_codhorario = horario.codhorario AND horario.proveedor_codproveedor = proveedor.codproveedor AND proveedor.codproveedor =1', [], (err, rows, fields) => {
       if (!err)
@@ -193,7 +194,8 @@ app.get('/prov/cita/notsel', (req, res) => {
       else
           console.log(err);
   })
-});
+};
+
 
 
 module.exports = controller;
