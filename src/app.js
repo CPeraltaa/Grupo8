@@ -1,58 +1,52 @@
-const mysql = require('mysql');
-const express = require('express'),
-app = express();
-
-const session = require('express-session');
+const express = require('express');
 const path = require('path');
-const bodyparser = require('body-parser');
+var bodyParser = require('body-parser');
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'views')));
+const morgan = require('morgan');
+const mysql = require('mysql');
+const myConnection = require('express-myconnection');
+const session = require('express-session');
+const app = express();
 
-
+//importing routes
 const citaRoutes = require('./routes/routes');
 
-app.set('port',process.env.PORT || 3000);
+
+
+//settings
+app.set('port',process.env.PORT || 3001);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-
-
+//midleware
+app.use(morgan('dev'));
+app.use(myConnection(mysql, {
+	host:'localhost',
+	user: 'root',
+	password: '12345',
+	port: 3306,
+	database: 'proyecto'
+}, 'single'));
 app.use(session({
 	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
+	resave: false,
+	saveUninitialized: true,
+	cookie: { maxAge: 60000 }
 }));
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
 
-
-app.use(bodyparser.json());
-
-var mysqlConnection = mysql.createConnection({
-    host: 'localhost', //route
-    user: 'root', //
-    password: '12345',
-    database: 'proyecto',
-    multipleStatements: true
-});
-
-
-mysqlConnection.connect((err) => {
-    if (!err)
-        console.log('DB connection succeded.');
-    else
-        console.log('DB connection failed \n Error : ' + JSON.stringify(err, undefined, 2));
-});
-
-
-
-
-
+//routes
 app.use('/', citaRoutes);
 
 
+//static files 
+app.use(express.static(path.join(__dirname, 'views')));
+
+
+
 app.listen(app.get('port'), ()=>{
-	console.log('Server on port 3000');
+	console.log('Server on port 3001');
 });
 
 module.exports = app;
