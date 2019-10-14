@@ -221,7 +221,7 @@ controller.horariobydoctor = function(req, res) {
 //get supplier by id
 controller.supplierbyid = function(req, res) {
   req.getConnection((err, conn) => {
-    controller.query(
+    conn.query(
       "SELECT nombres, apellidos, email FROM proveedor WHERE \
 codproveedor = ?;",
       [req.params.id],
