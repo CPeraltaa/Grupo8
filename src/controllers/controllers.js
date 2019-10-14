@@ -1,6 +1,73 @@
 const controller={};
 
 
+controller.index = function(req, res){
+  var message = '';
+res.render('login',{message: message});
+};
+
+controller.login = function(req, res){
+	var message = '';
+	var sess = req.session; 
+  
+	if(req.method == "POST"){
+     var post  = req.body;
+	   var name= post.user_name;
+	   var pass= post.password;
+	  
+	   var sql="SELECT * FROM `cliente` WHERE `username`='"+name+"' and password = '"+pass+"'";                           
+     console.log(sql);
+	   req.getConnection((err, conn) => {
+		conn.query(sql, function(err, results){      
+		  if(results.length){
+			 req.session.userId = results[0].codcliente;
+			 req.session.user = results[0];
+			 console.log(results[0].codcliente);
+			 //res.redirect('/home/dashboard');
+			
+			 res.redirect('/home/dashboard');
+			 
+		  }
+		  else{
+			 message = 'Wrong Credentials.';
+			 res.render('login.ejs',{message: message});
+		  }
+				  
+	   });
+		});
+	} else {
+	   res.render('login.ejs',{message: message});
+	}         
+ };
+
+
+
+ controller.dashboard = function(req, res, next){
+	
+	var user =  req.session.user,
+	userId = req.session.userId;
+	
+	if(userId == null){
+		res.redirect("/login");
+		return;
+	}
+	 
+		   res.render('profile.ejs', {user:user});	  
+
+};
+
+
+controller.logout = function(req, res, next){
+	
+	req.session.destroy((err) => {
+        if(err) {
+            return console.log(err);
+        }
+        res.redirect('/');
+    });  
+
+};
+
 
 controller.horario = function(req, res){
   res.render('calendar');

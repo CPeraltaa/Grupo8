@@ -15,6 +15,14 @@ router.get('/provedor/cita/free', controllers.horariobydoctor);
 router.get('/horario', controllers.horario);
 
 
+router.get('/',controllers.index);
+router.get('/login',controllers.index);
+router.post('/login',controllers.login);
+router.get('/home/dashboard',controllers.dashboard);
+router.get('/logout',controllers.logout);
+
+
+
 //router.post('/addDesc',controllers.saveDesc)
 
 module.exports = router;
