@@ -18,6 +18,8 @@ router.get('/horario', controllers.horario);
 router.get('/',controllers.index);
 router.get('/login',controllers.index);
 router.post('/login',controllers.login);
+router.get('/signup',controllers.signup);
+router.post('/signup',controllers.sign);
 router.get('/home/dashboard',controllers.dashboard);
 router.get('/logout',controllers.logout);
 
