@@ -18,6 +18,16 @@ if(req.method == "POST"){
 }
 };
 
+controller.signup_prov = function(req, res){
+  message = '';
+  if(req.method == "POST"){
+     //post data
+  
+  } else {
+     res.render('signup_prov');
+  }
+  };
+
 
 controller.login = function(req, res){
 var message = '';
@@ -28,13 +38,13 @@ if(req.method == "POST"){
    var name= post.user_name;
    var pass= post.password;
   
-   var sql="SELECT * FROM `user` WHERE `no_cuenta`='"+name+"' and password = '"+pass+"'";                           
+   var sql="SELECT * FROM `cliente` WHERE `username`='"+name+"' and password = '"+pass+"'";                           
    req.getConnection((err, conn) => {
   conn.query(sql, function(err, results){      
     if(results.length){
-     req.session.userId = results[0].iduser;
+     req.session.userId = results[0].codcliente;
      req.session.user = results[0];
-     console.log(results[0].iduser);
+     console.log(results[0].codcliente);
      //res.redirect('/home/dashboard');
     
      res.redirect('/home/dashboard');
@@ -52,7 +62,7 @@ if(req.method == "POST"){
 }         
 };
 
-controller.sign = function(req, res){
+controller.sign_client = function(req, res){
 message = '';
 if(req.method == "POST"){
    var post  = req.body;
@@ -64,7 +74,7 @@ if(req.method == "POST"){
    var dpi= post.dpi;
    var saldo= post.saldo;
 
-   var sql = "INSERT INTO `user`(`nombre`,`apellido`,`correo`,`no_cuenta`, `password`, `dpi` , `saldo_inicial`) VALUES ('" + fname + "','" + lname + "','" + mail + "','" + account + "','" + pass  + "','" + dpi + "','" + saldo+ "')";
+   var sql = "INSERT INTO `cliente`(`nombres`,`apellidos`,`email`,`username`, `password`) VALUES ('" + fname + "','" + lname + "','" + mail + "','" + account + "','" + pass  + "')";
    req.getConnection((err, conn) => {
 
   conn.query(sql, function(err, result) {
@@ -82,6 +92,37 @@ if(req.method == "POST"){
 res.render('signup');
 }
 };
+
+controller.sign_prov = function(req, res){
+  message = '';
+  if(req.method == "POST"){
+     var post  = req.body;
+     var account= post.account;
+     var pass= post.password;
+     var fname= post.first_name;
+     var lname= post.last_name;
+     var mail= post.mail;
+     var dpi= post.dpi;
+     var saldo= post.saldo;
+  
+     var sql = "INSERT INTO `proveedor`(`nombres`,`apellidos`,`email`,`username`, `password`,'categoria_codcategoria') VALUES ('" + fname + "','" + lname + "','" + mail + "','" + account + "','" + pass  + "'," + 1+ ")";
+     req.getConnection((err, conn) => {
+  
+    conn.query(sql, function(err, result) {
+      if (!err){
+      message = "Succesfully! Your account has been created.";
+      res.render('login.ejs',{message: message});
+      }
+      else
+      message = "Wrong! There were errors";
+      res.render('signup.ejs',{message: message});
+      console.log(err);
+     });
+  });
+  } else {
+  res.render('signup');
+  }
+  };
 
 
 

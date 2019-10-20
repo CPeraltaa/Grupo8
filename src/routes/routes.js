@@ -19,7 +19,9 @@ router.get('/',controllers.index);
 router.get('/login',controllers.index);
 router.post('/login',controllers.login);
 router.get('/signup',controllers.signup);
-router.post('/signup',controllers.sign);
+router.get('/prov/signup',controllers.signup_prov);
+router.post('/signup',controllers.sign_client);
+router.post('/prov/signup',controllers.sign_prov);
 router.get('/home/dashboard',controllers.dashboard);
 router.get('/logout',controllers.logout);
 
