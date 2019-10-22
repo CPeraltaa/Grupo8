@@ -29,6 +29,11 @@ router.get('/logout',controllers.logout);
 router.get('/p/logout',controllers.logout_prov);
 router.get('/profile',controllers.profile);
 
+router.get('/citas_past',controllers.citas_previas);
+router.get('/citas_upc',controllers.citas_futuras);
+router.get('/p/addsc',controllers.addsc);
+
+
 
 
 //router.post('/addDesc',controllers.saveDesc)
