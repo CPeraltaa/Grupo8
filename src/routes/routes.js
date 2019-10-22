@@ -16,14 +16,18 @@ router.get('/horario', controllers.horario);
 router.get('/proveedor/:id', controllers.supplierbyid);
 
 router.get('/',controllers.index);
-router.get('/login',controllers.index);
-router.post('/login',controllers.login);
+router.get('/login',controllers.log_user);
+router.get('/p/login',controllers.log_prov);
+router.post('/login',controllers.login_user);
+router.post('/p/login',controllers.login_prov);
 router.get('/signup',controllers.signup);
 router.get('/prov/signup',controllers.signup_prov);
 router.post('/signup',controllers.sign_client);
 router.post('/prov/signup',controllers.sign_prov);
 router.get('/home/dashboard',controllers.dashboard);
 router.get('/logout',controllers.logout);
+router.get('/p/logout',controllers.logout_prov);
+router.get('/profile',controllers.profile);
 
 
 
