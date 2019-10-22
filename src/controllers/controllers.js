@@ -7,6 +7,18 @@ controller.index = function(req, res){
 res.render('login',{message: message});
 };
 
+
+controller.log_user = function(req, res){
+  var message = '';
+res.render('login',{message: message});
+};
+
+
+controller.log_prov = function(req, res){
+  var message = '';
+res.render('login_p',{message: message});
+};
+
 //se agrego el codigo de sing up
 controller.signup = function(req, res){
 message = '';
@@ -29,7 +41,7 @@ controller.signup_prov = function(req, res){
   };
 
 
-controller.login = function(req, res){
+controller.login_user = function(req, res){
 var message = '';
 var sess = req.session; 
 
@@ -44,6 +56,7 @@ if(req.method == "POST"){
     if(results.length){
      req.session.userId = results[0].codcliente;
      req.session.user = results[0];
+     req.session.user.rol = 0;
      console.log(results[0].codcliente);
      //res.redirect('/home/dashboard');
     
@@ -51,8 +64,9 @@ if(req.method == "POST"){
      
     }
     else{
-     message = 'Wrong Credentials.';
-     res.render('login.ejs',{message: message});
+      message = 'Wrong Credentials.';
+        res.render('login.ejs',{message: message});
+
     }
         
    });
@@ -60,6 +74,49 @@ if(req.method == "POST"){
 } else {
    res.render('login.ejs',{message: message});
 }         
+};
+
+controller.login_prov = function(req, res){
+  var message = '';
+  var sess = req.session; 
+  
+  if(req.method == "POST"){
+     var post  = req.body;
+     var name= post.user_name;
+     var pass= post.password;
+    
+     var sql="SELECT * FROM `proveedor` WHERE `username`='"+name+"' and password = '"+pass+"'";                           
+     req.getConnection((err, conn) => {
+    conn.query(sql, function(err, results){      
+      if(results.length){
+       req.session.userId = results[0].codproveedor;
+       req.session.user = results[0];
+       req.session.rol = 1;
+       console.log(results[0].codproveedor);
+       //res.redirect('/home/dashboard');
+      
+       res.redirect('/home/dashboard');
+       
+      }
+      else{
+        message = 'Wrong Credentials.';
+          res.render('login_p.ejs',{message: message});
+  
+      }
+          
+     });
+    });
+  } else {
+     res.render('login_p.ejs',{message: message});
+  }         
+  };
+  
+
+
+controller.profile = function(req, res){
+	var user =  req.session.user,
+	userId = req.session.userId;
+	res.render('profile',{user: user});
 };
 
 controller.sign_client = function(req, res){
@@ -136,7 +193,7 @@ if(userId == null){
   return;
 }
  
-     res.render('profile.ejs', {user:user});	  
+     res.render('index.ejs', {user:user});	  
 
 };
 
@@ -150,7 +207,16 @@ req.session.destroy((err) => {
   });  
 
 };
+controller.logout_prov = function(req, res, next){
 
+  req.session.destroy((err) => {
+        if(err) {
+            return console.log(err);
+        }
+        res.redirect('/p/login');
+    });  
+  
+  };
 
 
 
