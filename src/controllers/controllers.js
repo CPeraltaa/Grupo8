@@ -455,4 +455,65 @@ codproveedor = ?;",
   });
 };
 
+
+
+
+controller.citas_futuras = function(req, res) {
+  var user =  req.session.user,
+	userId = req.session.userId;
+  req.getConnection((err, conn) => {
+    conn.query(
+      "SELECT * FROM cita, horario, proveedor \
+      WHERE cita.horario_codhorario = horario.codhorario AND proveedor.codproveedor = horario.proveedor_codproveedor AND fecha > NOW() AND cliente_codcliente = ?;",
+      [userId],
+      (err, rows, fields) => {
+        if (!err) {
+          res.render('citas_pasadas.ejs', {user:user, res:rows});	  
+
+        }
+        else console.log(err);
+      }
+    );
+  });
+};
+
+
+controller.citas_previas = function(req, res) {
+  var user =  req.session.user,
+	userId = req.session.userId;
+  req.getConnection((err, conn) => {
+    conn.query(
+      "SELECT * FROM cita, horario, proveedor \
+      WHERE cita.horario_codhorario = horario.codhorario AND proveedor.codproveedor = horario.proveedor_codproveedor AND fecha < NOW() AND cliente_codcliente = ?;",
+      [userId],
+      (err, rows, fields) => {
+        if (!err) {
+          res.render('citas_pasadas.ejs', {user:user, res:rows});	  
+
+        }
+        else console.log(err);
+      }
+    );
+  });
+};
+
+controller.addsc = function(req, res){
+  var user =  req.session.user,
+	userId = req.session.userId;
+  message = '';
+  if(req.method == "POST"){
+    
+  } 
+  else {
+    res.render('add_schedule.ejs', {user:user, message:message});	  
+  }
+  };
+
+
+
+
+
+
+
+
 module.exports = controller;
