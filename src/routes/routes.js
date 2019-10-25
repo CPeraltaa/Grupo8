@@ -14,6 +14,7 @@ router.get('/client/cita/logged', controllers.horariobyuser);
 router.get('/provedor/cita/free', controllers.horariobydoctor);
 router.get('/horario', controllers.horario);
 router.get('/proveedor/:id', controllers.supplierbyid);
+router.get('/proveedor/comentario/:id', controllers.ver_comentario);
 
 router.get('/',controllers.index);
 router.get('/login',controllers.log_user);

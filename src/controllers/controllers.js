@@ -511,7 +511,25 @@ controller.addsc = function(req, res){
 
 
 
+//get de comentarios por proveedor
+controller.ver_comentario=(req,res)=>{
+	const { id } = req.params;
+	req.getConnection((err,conn)=>{
+		conn.query('select  cliente.nombres, cliente.apellidos,comentario.comentario From comentario\
+    inner join cliente on comentario.cliente_codcliente=cliente.codcliente\
+    where comentario.proveedor_codproveedor = ?;',[id], (err,comentario)=> {
+			if(err){
+				res.json(err);
+			}
 
+			console.log(comentario);
+			res.render('comentarios',{
+				data: comentario
+			})
+		});
+	
+});
+};
 
 
 
