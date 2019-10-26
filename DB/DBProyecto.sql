@@ -53,6 +53,14 @@ CREATE TABLE solicitud (
     accepted BIT NOT NULL
 );
 
+CREATE TABLE comentario (
+    codComment             INTEGER NOT NULL AUTO_INCREMENT,
+    proveedor_codproveedor   INTEGER NOT NULL,
+   cliente_codcliente   INTEGER NOT NULL,
+    comentario                  VARCHAR(900) NOT NULL,
+   PRIMARY KEY ( codComment )
+);
+
 
 ALTER TABLE cita
     ADD CONSTRAINT cita_cliente_fk FOREIGN KEY ( cliente_codcliente )
@@ -77,6 +85,15 @@ ALTER TABLE solicitud
 ALTER TABLE solicitud
     ADD CONSTRAINT solicitud_horario_fk FOREIGN KEY ( proveedor_codproveedor)
         REFERENCES proveedor ( codproveedor );
+
+ALTER TABLE comentario
+    ADD CONSTRAINT comentario_cliente_fk FOREIGN KEY ( cliente_codcliente )
+        REFERENCES cliente ( codcliente );
+
+ALTER TABLE comentario
+    ADD CONSTRAINT comentario_proveedor_fk FOREIGN KEY ( proveedor_codproveedor)
+        REFERENCES proveedor ( codproveedor );
+
 
 
 delimiter $$
