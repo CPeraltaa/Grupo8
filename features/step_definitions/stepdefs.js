@@ -55,3 +55,21 @@ function EmailValido(mail) {
     assert.equal(this.actualAnswer,string);
   });
 
+
+
+  //Valid NAME and LASTNAME
+
+  function validarNombres(nombre, apellido){
+    return (/^[A-Z]+$/i.test(nombre) && /^[A-Z]+$/i.test(apellido));
+    }
+  
+  
+    Given('I enter my {string} and {string}', function (string, string2) {
+      this.string=string;
+      this.string2=string2;
+    });
+  
+  
+    When('I click submit again', function () {
+      this.actualAnswer=validarNombres(this.string,this.string2)+"";
+    });
