@@ -34,3 +34,24 @@ function ValidLogin(email,pass) {
 
 
 
+//VALID EMAIL
+
+
+
+function EmailValido(mail) { 
+    
+	return /^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(mail); 
+    }
+
+  Given('I enter my {string}', function (string) {
+    this.string=string;
+  });
+
+  When('I click submit', function () {
+    this.actualAnswer=EmailValido(this.string)+"";
+  });
+
+  Then('We should get {string}', function (string) {
+    assert.equal(this.actualAnswer,string);
+  });
+
