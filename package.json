@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=text mocha",
+    "test": "cucumber-js && nyc --reporter=text mocha",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [],

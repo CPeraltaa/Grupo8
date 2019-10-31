@@ -1,5 +1,5 @@
 //TDD
-const app = require('../app');
+const app = require('../src/app');
 const expect = require('expect');
 const request = require('supertest');
 before(done => {
