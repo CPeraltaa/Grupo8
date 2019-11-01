@@ -14,3 +14,5 @@ insert into horario( proveedor_codproveedor, fecha, hora_inicio, hora_fin)
 values ( 2, '2019/09/18', '09:00' , '11:00');
 
 
+insert into comentariocomentario( proveedor_codproveedor, cliente_codcliente, cometario)
+values (1,1,'buen servicio'), (1,2,'Excelente atencion'),(2,1,'mal servicio'), (2,2,'mala atencion');
