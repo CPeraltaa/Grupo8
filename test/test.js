@@ -91,3 +91,11 @@ describe ("vista login",function(){
     })
     
 })
+
+describe ("vista signup",function(){
+    it("should get the signup form", function(done){
+        request(app).get('/signup')
+        .expect(200,done)
+    })
+    
+})
