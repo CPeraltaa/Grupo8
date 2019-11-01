@@ -60,30 +60,6 @@ describe ("solicitud", function(){
     });
 });
 
-describe ('Calificar servicio', function(){
-    describe ('Given a supplier with id', function(){
-        it('Should return information from supplier', function(done){
-            request(app).get('/proveedor/1')
-            .expect(200, done);
-        });
-        describe ('And a customer with id', function(){
-            it('should return json with the list of services supplied', function(done){
-                request(app).get('proveedor/servicios/1')
-                .expect('Content-Type', /json/)
-                .expect(200, done);
-            });
-            describe ('When selected service is rated with stars', function(){
-                it('Then save the rating in the BD', function(done){
-                    request(app).post('/proveedor/rating/')
-                    .send({service_rating:5})
-                    .expect(302)
-                    .expect('Inserted succesfully', done)
-                });
-            });            
-        });
-    });
-});
-
 describe ("vista login",function(){
     it("shouldgets get login view", function(done){
         request(app).get('/login')
