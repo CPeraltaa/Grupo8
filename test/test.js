@@ -83,3 +83,11 @@ describe ('Calificar servicio', function(){
         });
     });
 });
+
+describe ("vista login",function(){
+    it("shouldgets get login view", function(done){
+        request(app).get('/login')
+        .expect(200,done)
+    })
+    
+})
