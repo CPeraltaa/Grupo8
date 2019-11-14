@@ -218,11 +218,9 @@ controller.logout_prov = function(req, res, next){
   
   };
 
+  //hola
 
 
-
-aksdf
-;
 controller.horario = function(req, res) {
   var user =  req.session.user,
 	userId = req.session.userId;
