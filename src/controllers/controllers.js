@@ -221,9 +221,13 @@ controller.logout_prov = function(req, res, next){
 
 
 
-
+aksdf
+;
 controller.horario = function(req, res) {
-  res.render("calendar");
+  var user =  req.session.user,
+	userId = req.session.userId;
+  message = '';
+  res.render('calendar.ejs', {user:user, message:message});	  
 };
 
 //Registro de provededor
