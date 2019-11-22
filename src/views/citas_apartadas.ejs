@@ -1,0 +1,38 @@
+<%include partial/_header%>
+
+
+<div class="container">
+        <h2 class="text-center">Citas Apartadas</h2>
+        <br>
+        <p class="text-center">A continuación se muestran las citas proximas:</p>   
+        <br>         
+        <table class="table table-sm table-dark  table-hover ">
+          <thead>
+            <tr>
+              <th class="col-sm-2">Proveedor</th>
+              <th class="col-sm-2">Descripcion</th>
+              <th class="col-sm-2">Email</th>
+              <th class="col-sm-2">Fecha</th>
+              <th class="col-sm-2">Hora_Inicio</th>
+              <th class="col-sm-2">Hora_fin</th>
+            </tr>
+          </thead>
+          <tbody>
+              <% if(res) { for (var k in res){ %>
+                <tr>
+                    <td><%=res[k].nombres%>&nbsp<%=res[k].apellidos%></td>
+                    <td>Servicio terminado. Desea Calificarlo?</td>
+                    <td><%=res[k].email%></td>
+                    <td><%=res[k].fecha%></td>
+                    <td><%=res[k].hora_inicio%></td>
+                    <td><%=res[k].hora_fin%></td>
+
+                  </tr>
+
+                <%}  } else{ '' }%>
+
+           
+        
+          </tbody>
+        </table>
+      </div>

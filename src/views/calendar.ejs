@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include partial/_header %>
-<div class="container col-sm-4 col-md-7 col-lg-4 mt-5">
+        <%if (user.rol == 0){ %>
+            <%include partial/_header%>
+        <% }else{%>
+            <%include partial/_header_prov %>
+            <% }%>
+    <div class="container col-sm-4 col-md-7 col-lg-4 mt-5">
     <div class="card">
         <h3 class="card-header" id="monthAndYear"></h3>
         <table class="table table-bordered table-responsive-sm" id="calendar">
