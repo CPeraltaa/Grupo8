@@ -16,7 +16,7 @@
     "express-session": "^1.16.1",
     "express-myconnection": "^1.0.4",
     "morgan": "^1.9.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "mysql": "^2.16.0",
     "popper.js": "^1.14.7"
   },
